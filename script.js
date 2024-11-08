@@ -12,15 +12,14 @@ let specialFood = null; // Only spawn green apple occasionally
 let score = 0;
 let timeLeft = 60; // Initial time limit in seconds
 let appleCounter = 0; // Track the number of apples eaten
+let isPaused = false; // Track whether the game is paused
 
 // Display elements
 const scoreDisplay = document.getElementById('score');
 const timerDisplay = document.getElementById('timer');
 
-// Control the snake direction with arrow keys
-document.addEventListener('keydown', changeDirection);
-
-function changeDirection(event) {
+// Control the snake direction with arrow keys and toggle pause with 'P'
+document.addEventListener('keydown', (event) => {
     const keyPressed = event.key;
     if (keyPressed === 'ArrowUp' && direction.y === 0) {
         direction = { x: 0, y: -1 };
@@ -30,16 +29,18 @@ function changeDirection(event) {
         direction = { x: -1, y: 0 };
     } else if (keyPressed === 'ArrowRight' && direction.x === 0) {
         direction = { x: 1, y: 0 };
+    } else if (keyPressed === 'p' || keyPressed === 'P') {
+        isPaused = !isPaused; // Toggle pause
     }
-}
+});
 
 // Countdown timer function
 function startTimer() {
     const timerInterval = setInterval(() => {
-        if (timeLeft > 0) {
+        if (timeLeft > 0 && !isPaused) { // Only decrease time if game is not paused
             timeLeft--;
             timerDisplay.textContent = `Time Left: ${timeLeft}s`;
-        } else {
+        } else if (timeLeft === 0) {
             clearInterval(timerInterval);
             endGame("Time's up!"); // End game when time runs out
         }
@@ -48,11 +49,13 @@ function startTimer() {
 
 // Game loop
 function gameLoop() {
-    update();
-    if (checkCollision()) {
-        endGame("Game Over!"); // End game on collision
+    if (!isPaused) { // Only update and draw if the game is not paused
+        update();
+        if (checkCollision()) {
+            endGame("Game Over!"); // End game on collision
+        }
+        draw();
     }
-    draw();
 }
 
 // Update snake position and check for food
@@ -138,6 +141,7 @@ function resetGame() {
     score = 0;
     timeLeft = 60; // Reset time limit
     appleCounter = 0; // Reset apple counter
+    isPaused = false; // Reset pause state
     scoreDisplay.textContent = `Score: ${score}`;
     timerDisplay.textContent = `Time Left: ${timeLeft}s`;
     food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
