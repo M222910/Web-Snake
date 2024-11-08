@@ -149,5 +149,70 @@ function resetGame() {
 }
 
 // Start the game loop and timer
+
+// Start of the script
+console.log("Game script loaded successfully.");
+
+// Toggle Pause
+document.addEventListener('keydown', (event) => {
+    const keyPressed = event.key;
+    if (keyPressed === 'p' || keyPressed === 'P') {
+        isPaused = !isPaused; // Toggle pause
+        console.log("Pause toggled:", isPaused); // Debug pause state
+    }
+});
+
+// Countdown timer function
+function startTimer() {
+    const timerInterval = setInterval(() => {
+        if (timeLeft > 0 && !isPaused) { // Only decrease time if game is not paused
+            timeLeft--;
+            timerDisplay.textContent = `Time Left: ${timeLeft}s`;
+            console.log("Timer updated:", timeLeft); // Debug timer update
+        } else if (timeLeft === 0) {
+            clearInterval(timerInterval);
+            endGame("Time's up!"); // End game when time runs out
+            console.log("Game over due to timer.");
+        }
+    }, 1000);
+}
+
+// Spawning new apple
+function update() {
+    const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
+    snake.unshift(head);
+
+    // Check if snake has eaten the regular food
+    if (head.x === food.x && head.y === food.y) {
+        score++;
+        appleCounter++;
+        scoreDisplay.textContent = `Score: ${score}`;
+        console.log("Red apple eaten. Score:", score, "Apple counter:", appleCounter);
+
+        // Every 10th apple is a green apple
+        if (appleCounter === 10) {
+            specialFood = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+            appleCounter = 0;
+            console.log("Green apple spawned at:", specialFood);
+        } else {
+            // Spawn new red apple if not 10th
+            food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+            console.log("Red apple spawned at:", food);
+        }
+    } else if (specialFood && head.x === specialFood.x && head.y === specialFood.y) {
+        // Check if snake has eaten special food (green apple)
+        score++;
+        timeLeft += 30;
+        scoreDisplay.textContent = `Score: ${score}`;
+        timerDisplay.textContent = `Time Left: ${timeLeft}s`;
+        console.log("Green apple eaten. Score:", score, "Time left:", timeLeft);
+
+        // Clear special food after it's eaten
+        specialFood = null;
+    } else {
+        snake.pop(); // Remove tail if no food eaten
+    }
+}
+
 setInterval(gameLoop, 100);
 startTimer();
