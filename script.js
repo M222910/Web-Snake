@@ -8,8 +8,10 @@ const cols = canvas.width / boxSize;
 let snake = [{ x: 10, y: 10 }];
 let direction = { x: 1, y: 0 };
 let food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+let specialFood = null; // Only spawn green apple occasionally
 let score = 0;
-let timeLeft = 60; // Set initial time limit in seconds
+let timeLeft = 60; // Initial time limit in seconds
+let appleCounter = 0; // Track the number of apples eaten
 
 // Display elements
 const scoreDisplay = document.getElementById('score');
@@ -58,11 +60,29 @@ function update() {
     const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
     snake.unshift(head);
 
-    // Check if snake has eaten food
+    // Check if snake has eaten the regular food
     if (head.x === food.x && head.y === food.y) {
         score++;
-        food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+        appleCounter++; // Increment apple counter
         scoreDisplay.textContent = `Score: ${score}`;
+
+        // Every 10th apple is a green apple
+        if (appleCounter === 10) {
+            specialFood = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+            appleCounter = 0; // Reset counter after spawning a green apple
+        } else {
+            // Spawn new red apple if not 10th
+            food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+        }
+    } else if (specialFood && head.x === specialFood.x && head.y === specialFood.y) {
+        // Check if snake has eaten special food (green apple)
+        score++;
+        timeLeft += 30; // Add 30 seconds to the timer
+        scoreDisplay.textContent = `Score: ${score}`;
+        timerDisplay.textContent = `Time Left: ${timeLeft}s`; // Update timer display
+
+        // Clear special food after it's eaten
+        specialFood = null;
     } else {
         snake.pop(); // Remove tail if no food eaten
     }
@@ -88,9 +108,15 @@ function checkCollision() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw food
+    // Draw regular food (red apple)
     ctx.fillStyle = 'red';
     ctx.fillRect(food.x * boxSize, food.y * boxSize, boxSize, boxSize);
+
+    // Draw special food (green apple) if it exists
+    if (specialFood) {
+        ctx.fillStyle = 'green';
+        ctx.fillRect(specialFood.x * boxSize, specialFood.y * boxSize, boxSize, boxSize);
+    }
 
     // Draw snake in blue
     ctx.fillStyle = 'blue'; // Change snake color to blue
@@ -111,9 +137,11 @@ function resetGame() {
     direction = { x: 1, y: 0 };
     score = 0;
     timeLeft = 60; // Reset time limit
+    appleCounter = 0; // Reset apple counter
     scoreDisplay.textContent = `Score: ${score}`;
     timerDisplay.textContent = `Time Left: ${timeLeft}s`;
     food = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+    specialFood = null; // Remove any existing special food
 }
 
 // Start the game loop and timer
