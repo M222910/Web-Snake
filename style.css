@@ -48,3 +48,39 @@ h1 {
     margin-top: 10px;
     text-shadow: 1px 1px 2px #000;
 }
+
+/* Classic theme (default) */
+body.classic-theme {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+#gameCanvas.classic-theme {
+    background-color: #333;
+    border: 4px solid #555;
+}
+
+/* Nokia theme */
+body.nokia-theme {
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+}
+
+#gameCanvas.nokia-theme {
+    background-color: #222;
+    border: 2px solid #00ff00;
+}
+
+/* Google Snake theme */
+body.google-theme {
+    background-color: #ffffff;
+    color: #333;
+    font-family: Arial, sans-serif;
+}
+
+#gameCanvas.google-theme {
+    background-color: #eee;
+    border: 2px solid #4285f4;
+}
+
