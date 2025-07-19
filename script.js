@@ -147,18 +147,22 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Choose colors based on the selected theme
-    let snakeColor = 'blue';
+    let snakeColor = 'purple';
     let foodColor = 'red';
     let specialFoodColor = 'green';
 
     if (document.body.classList.contains('nokia-theme')) {
-        snakeColor = '#00ff00';  // Green snake for Nokia theme
-        foodColor = '#00ff00';   // Green food for Nokia theme
-        specialFoodColor = '#00ff00';
+        snakeColor = '#43523d';  // Green snake for Nokia theme
+        foodColor = '#43523d';   // Green food for Nokia theme
+        specialFoodColor = '#43523d';
     } else if (document.body.classList.contains('google-theme')) {
-        snakeColor = '#34a853';  // Google green for snake
+        snakeColor = '#4285f4';  // Google blue for snake
         foodColor = '#ea4335';   // Google red for regular food
         specialFoodColor = '#fbbc05';  // Google yellow for special food
+    } else if (document.body.classList.contains('retro-theme')) {
+        snakeColor = '#6abfc6' // Commodore cyan for snake
+        foodColor = '#cb7e75' // Commodore red for regular food
+        specialFoodColor = '#5cab5e' // Commodore green for special food
     }
 
     // Draw food
@@ -215,8 +219,8 @@ themeSelect.addEventListener('change', function() {
     const selectedTheme = themeSelect.value;
 
     // Remove all theme-related classes from body and canvas
-    document.body.classList.remove('classic-theme', 'nokia-theme', 'google-theme');
-    canvas.classList.remove('classic-theme', 'nokia-theme', 'google-theme');
+    document.body.classList.remove('classic-theme', 'nokia-theme', 'google-theme', 'retro-theme');
+    canvas.classList.remove('classic-theme', 'nokia-theme', 'google-theme', 'retro-theme');
 
     // Apply the selected theme
     if (selectedTheme === 'nokia') {
@@ -225,6 +229,9 @@ themeSelect.addEventListener('change', function() {
     } else if (selectedTheme === 'google') {
         document.body.classList.add('google-theme');
         canvas.classList.add('google-theme');
+    } else if (selectedTheme === 'retro') {
+        document.body.classList.add('retro-theme');
+        canvas.classList.add('retro-theme');
     } else {
         document.body.classList.add('classic-theme');
         canvas.classList.add('classic-theme');
