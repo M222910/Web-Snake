@@ -57,30 +57,41 @@ body.classic-theme {
 
 #gameCanvas.classic-theme {
     background-color: #333;
-    border: 4px solid #555;
+    border: 10px solid #555;
 }
 
 /* Nokia theme */
 body.nokia-theme {
     background-color: #000;
-    color: #00ff00;
+    color: #43523d;
     font-family: 'Courier New', monospace;
 }
 
 #gameCanvas.nokia-theme {
-    background-color: #222;
-    border: 2px solid #00ff00;
+    background-color: #c7f0d8;
+    border: 10px solid #43523d;
 }
 
 /* Google Snake theme */
 body.google-theme {
-    background-color: #ffffff;
-    color: #333;
+    background-color: #8bc34a;
+    color: #34a853;
     font-family: Arial, sans-serif;
 }
 
 #gameCanvas.google-theme {
-    background-color: #eee;
-    border: 2px solid #4285f4;
+    background-color: #8bc34a;
+    border: 10px solid #34a853;
 }
 
+/* Retro Theme */
+body.retro-theme {
+    background-color: #887ecb;
+    color: #626262;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#gameCanvas.retro-theme {
+    background-color: #887ecb;
+    border: 10px solid #626262;
+}
